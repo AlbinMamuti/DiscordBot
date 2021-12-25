@@ -1,0 +1,26 @@
+{
+  "name": "DiscordBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/bot.js",
+    "dev": "nodemon ./src/bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlbinMamuti/DiscordBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlbinMamuti/DiscordBot/issues"
+  },
+  "homepage": "https://github.com/AlbinMamuti/DiscordBot#readme",
+  "dependencies": {
+    "discord.js": "^13.4.0",
+    "dotenv": "^10.0.0"
+  }
+}
