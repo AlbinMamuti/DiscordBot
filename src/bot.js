@@ -5,7 +5,11 @@ const client = new Client({ fetchAllMembers: true, intents: [Intents.FLAGS.GUILD
 const PREFIX = "$";
 
 /*
-    This Discord Bot is solely for educational purposes for myself studying NodeJs. It will get some pretty cool features like fetching Data or Products from variouses sources on the internet. But for now it will only be playfull in the Discord Chat
+    This Discord Bot is solely for educational purposes 
+    for myself studying NodeJs.
+    It will get some pretty cool features like fetching Data 
+    or Products from variouses sources on the internet. 
+    But for now it will only be playfull in the Discord Chat
 */
 
 /* Log everytime the Client/bot starts*/
