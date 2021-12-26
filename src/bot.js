@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const quotes = require('./quotes.js');
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const WOKCommands = require('wokcommands');
@@ -102,40 +101,7 @@ client.on('messageCreate', (message) => {
             })
                 .catch((err) => { return message.reply(`This user ${copyArgs0} is not a member of HSPG`) });
         }
-        //For Ban we do the same as in the Kick command, we just replace it with
-        //the ban command.
-        else if (CMD_NAME === 'ban') {
-            if (!message.member.permissionsIn(message.channel).has("BAN_MEMBERS"))
-                return message.reply('Din cock isch viel zchli für da');
-            if (!message.member.permissions.has('BAN_MEMBERS'))
-                return message.reply('Du häsch kei Rechte pessant');
-            if (args.length === 0)
-                return message.reply('Who tf should i kick master');
-            //We check if we have a pure ID or a User Tag, we trim if needed
-            console.log(`trimming input`);
-            var regex = /^[0-9]+$/;
-            let copyArgs0 = args[0];
-            if (!args[0].match(regex))
-                args[0] = args[0].substring(3, args[0].length - 1);
-            console.log(`searching for ${args[0]}`);
-            //Now we search for the user, if found we ban him, otherwise 
-            //we report back that this User is not a Member of the Discord
-            if (args[0] === client.user.id)
-                message.reply("something stinks");
-            message.guild.members.fetch(args[0])
-                .then((member) => {
-                    member.ban()
-                        .then((member) => {
-                            message.channel.send(`${member} was banned from HSPG`);
-                            console.log(`${member} was banned from HSPG`);
-                        })
-                        .catch((err) => {
-                            message.channel.send(`You cant ban this member ${member}`);
-                            console.log(`Permission denied to ban ${member}`);
-                        })
-                })
-                .catch((err) => { return message.reply(`This user ${copyArgs0} is not a member of HSPH`) });
-        }
+
         //Now this will be replaced soon :
         //TLDR: This should only function as a subsitute and is a little bit of Troll atm. Genereic help response with some swiss-german spice
         else if (CMD_NAME === 'help') {
@@ -163,9 +129,6 @@ client.on('messageCreate', (message) => {
                 message.reply(`Funktion vor Rang mf`);
         }
         //return a inspirational quote from quote.js
-        else if (CMD_NAME === 'quote' || CMD_NAME === 'q') {
-            quotes.getQuote().then(quote => message.channel.send(quote));
-        }
         //Now this is where the troll really starts, but it will be removed once
         //the bot is more polished
         else {
