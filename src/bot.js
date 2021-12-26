@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const quotes = require('./quotes.js');
+const covCases = require('./covCases');
+const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
 const client = new Client({ fetchAllMembers: true, intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 const PREFIX = "$";
@@ -20,7 +23,7 @@ client.on('ready', () => {
 /*Event Listener for when people write in all Chats*/
 /*Mainly used for the Commands prefixed with $ */
 client.on('messageCreate', (message) => {
-    const CMD_IMPL = ['kick', 'ban', 'help'];
+    const CMD_IMPL = ['kick', 'ban', 'help', 'quote'];
     /*Don't let the Bot recurse on it's on messages*/
     if (message.author.bot)
         return;
@@ -49,7 +52,8 @@ client.on('messageCreate', (message) => {
                 let n = args[0].length;
                 args[0] = args[0].substring(3, n - 1);
             }
-
+            if (args[0] === client.user.id)
+                message.reply("something stinks");
             console.log(`searching for ${args[0]}`);
             //Now we search for the user, if found we kick him, otherwise 
             //we report back that this User is not a Member of the Discord
@@ -60,8 +64,8 @@ client.on('messageCreate', (message) => {
                         console.log(`${member} was kicked from HSPG`);
                     })
                     .catch((err) => {
-                        message.channel.send(`I cannot kick this user ${member}:(`);
-                        console.log(`there was an error, cannot kick this user ${member}`);
+                        message.channel.send(`I cannot kick this user ${members}`);
+                        console.log(`there was an error, cannot kick this user ${members}`);
                     });
             })
                 .catch((err) => { return message.reply(`This user ${copyArgs0} is not a member of HSPG`) });
@@ -84,6 +88,8 @@ client.on('messageCreate', (message) => {
             console.log(`searching for ${args[0]}`);
             //Now we search for the user, if found we ban him, otherwise 
             //we report back that this User is not a Member of the Discord
+            if (args[0] === client.user.id)
+                message.reply("something stinks");
             message.guild.members.fetch(args[0])
                 .then((member) => {
                     member.ban()
@@ -112,8 +118,22 @@ client.on('messageCreate', (message) => {
         }
         //This command needs work on, check privelge so that only OWNER
         // is allowed to execute this 
-        else if (CMD_NAME === 'kill')
-            client.destroy();
+        else if (CMD_NAME === 'kill') {
+            //console.log(message.member.roles.highest.name);
+            if (message.member.roles.highest.name === 'Most Racist anti-Indian') {
+                message.reply(`Was a great time serving for you Sir, DiscordBot is out`)
+                    .then(msg => {
+                        setTimeout(() => client.destroy(), 5000)
+                    })
+                    .catch(console.error);
+            }
+            else
+                message.reply(`Funktion vor Rang mf`);
+        }
+        //return a inspirational quote from quote.js
+        else if (CMD_NAME === 'quote' || CMD_NAME === 'q') {
+            quotes.getQuote().then(quote => message.channel.send(quote));
+        }
         //Now this is where the troll really starts, but it will be removed once
         //the bot is more polished
         else {
