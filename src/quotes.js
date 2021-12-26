@@ -7,7 +7,7 @@ function getQuote() {
             return res.json();
         })
         .then((data) => {
-            return data[0]["q"] + " -" + data[0]["a"];
+            return data[0]["q"] + " -" + data[0]["a"] + "<3";
         })
 }
 
