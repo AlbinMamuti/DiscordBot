@@ -1,10 +1,22 @@
 require('dotenv').config();
 
 const quotes = require('./quotes.js');
-const covCases = require('./covCases');
 const Discord = require('discord.js');
 const { Client, Intents } = require('discord.js');
-const client = new Client({ fetchAllMembers: true, intents: [Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+const WOKCommands = require('wokcommands');
+const path = require('path');
+const mongoose = require('mongoose');
+const testSchema = require('./test-schema');
+
+const client = new Client({
+    fetchAllMembers: true,
+    intents: [
+        Intents.FLAGS.GUILD_MEMBERS,
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    ]
+});
 const PREFIX = "$";
 
 /*
@@ -16,9 +28,29 @@ const PREFIX = "$";
 */
 
 /* Log everytime the Client/bot starts*/
-client.on('ready', () => {
+client.on('ready', async () => {
+    /*     await mongoose.connect(
+            process.env.MONGO_DB_ADRESS,
+            {
+                keepAlive: true,
+            }
+        ) */
     console.log(`${client.user.tag} has logged in`);
+    new WOKCommands(client, {
+        commandsDir: path.join(__dirname, '../commands'),
+        testServers: ['924639148659331103', '833052793866551316'],
+        botOwners: ['272691075959750656'],
+        //mongoUri: process.env.MONGO_DB_ADRESS,
+    })
+
+    /*     setTimeout(async () => {
+            await new testSchema({
+                message: 'hello world!',
+            }).save()
+        }, 1000) */
 });
+
+
 
 /*Event Listener for when people write in all Chats*/
 /*Mainly used for the Commands prefixed with $ */
