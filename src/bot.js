@@ -6,6 +6,7 @@ const WOKCommands = require('wokcommands');
 const path = require('path');
 const mongoose = require('mongoose');
 const testSchema = require('./test-schema');
+//const legacyCMD = require('~/legacyCommands/legacyCMD');
 
 const client = new Client({
     fetchAllMembers: true,
@@ -14,7 +15,8 @@ const client = new Client({
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_MESSAGES,
         Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    ]
+    ],
+    disableEveryone: false
 });
 const PREFIX = "$";
 

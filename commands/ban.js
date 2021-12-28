@@ -29,7 +29,7 @@ module.exports = {
             reason,
             days: 5,
         })
-        channel.send({
+        interaction.reply({
             content: `Banned ${target}`,
         })
     },
