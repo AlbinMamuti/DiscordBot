@@ -94,7 +94,7 @@ module.exports = {
             collectorNextTextChannel = nextTextChannel.createMessageComponentCollector({
                 filter,
                 max: 1,
-                time: 6000 - (i * 1000 / 4),
+                time: 6000 - (i * 1000 / 3),
             })
             //clean up all the old messages
 

@@ -39,9 +39,10 @@ client.on('ready', async () => {
     console.log(`${client.user.tag} has logged in`);
     new WOKCommands(client, {
         commandsDir: path.join(__dirname, '../commands'),
+        featuresDir: path.join(__dirname, '../features'),
         testServers: ['924639148659331103', '833052793866551316'],
         botOwners: ['272691075959750656'],
-        //mongoUri: process.env.MONGO_DB_ADRESS,
+        mongoUri: process.env.MONGO_DB_ADRESS,
     })
 
     /*     setTimeout(async () => {
@@ -68,45 +69,9 @@ client.on('messageCreate', (message) => {
             .substring(1, message.content.length)
             .split(/\s+/);
         console.log(`${message.author.tag} has issued command ${CMD_NAME} with following args ${args}`);
-
-        //Now check which command is typed in and process is
-        if (CMD_NAME === 'kick') {
-            if (!message.member.permissionsIn(message.channel).has("KICK_MEMBERS"))
-                return message.reply('You dont have Permission to Kick other Members');
-            if (!message.member.permissions.has('KICK_MEMBERS'))
-                return message.reply('You dont have Permission to Kick other Members');
-
-            if (args.length === 0)
-                return message.reply('please specify either USERID or USERTAG, i.e. $kick USERID | USERTAG');
-            var regex = /^[0-9]+$/;
-            let copyArgs0 = args[0];
-            //We check if we have a pure ID or a User Tag, we trim if needed
-            if (!args[0].match(regex)) {
-                let n = args[0].length;
-                args[0] = args[0].substring(3, n - 1);
-            }
-            if (args[0] === client.user.id)
-                message.reply("something stinks");
-            console.log(`searching for ${args[0]}`);
-            //Now we search for the user, if found we kick him, otherwise 
-            //we report back that this User is not a Member of the Discord
-            message.guild.members.fetch(args[0]).then((members) => {
-                members.kick()
-                    .then((member) => {
-                        message.channel.send(`${member} was kicked from HSPG`);
-                        console.log(`${member} was kicked from HSPG`);
-                    })
-                    .catch((err) => {
-                        message.channel.send(`I cannot kick this user ${members}`);
-                        console.log(`there was an error, cannot kick this user ${members}`);
-                    });
-            })
-                .catch((err) => { return message.reply(`This user ${copyArgs0} is not a member of HSPG`) });
-        }
-
         //Now this will be replaced soon :
         //TLDR: This should only function as a subsitute and is a little bit of Troll atm. Genereic help response with some swiss-german spice
-        else if (CMD_NAME === 'help') {
+        if (CMD_NAME === 'help') {
             let response = "";
             response += `Küss dein auge, vallah endlich eine wo mich brucht.\nAlso Amigo, isch eig voll easy, es git nur die commands:\n`;
             CMD_IMPL.forEach((CMD_INSTR) => {

@@ -11,17 +11,18 @@ module.exports = {
     expectedArgsTypes: ['USER', 'STRING'],
     minArgs: 1,
 
-    permissions: ['ADMINISTRATOR'],
+    requireRoles: true,
+    //    permissions: ['ADMINISTRATOR'],
     guildOnly: true,
 
     testOnly: true,
 
     slash: 'both',
 
-    callback: ({ interaction, message, args }) => {
-        const target = message ? message.mentions.members.first()
+    callback: async ({ interaction, message, args }) => {
+        const target = await (message ? message.mentions.members.first()
             : interaction.guild.members.fetch(trim(args[0]))
-                .then((members) => { return members });
+                .then((members) => { return members }))
         if (!target) {
             return 'Please tag someone on the server'
         }
