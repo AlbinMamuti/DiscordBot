@@ -1,5 +1,6 @@
 const { MessageActionRow, MessageButton, ButtonInteraction } = require("discord.js")
 const collector = require("./collector")
+const scoreBoardSchema = require('../models/HASScoreboard')
 
 module.exports = {
     category: 'Game',
@@ -70,7 +71,7 @@ module.exports = {
 
         //store all messages and clean them up
         let messageToCleanUp = []
-        let score = 0;
+        let round = 0;
         for (let i = 0; i < 10; i++) {
             if (!stillPlaying)
                 break
@@ -113,6 +114,7 @@ module.exports = {
                         content: `You lost and only achieved a Score of ${(i)}`,
                         components: []
                     })
+                    round = i
                     await delay(10000)
                     cleanUp(messageToCleanUp)
                 }
@@ -126,11 +128,28 @@ module.exports = {
             //now the fun part is the timer decreases
             await delay((1000 * (11 - i)))
         }
+        await delay(5000)
+        if (!round)
+            round = 9
+        const score = round + (stillPlaying ? 1 : 0)
         if (stillPlaying)
             await prevChannel.send(`@everyone THE PLAYER <@${playerID}> WON WITH A SCORE : 10/10`)
         else
-            await interaction.editReply(`You suck`)
-
+            await interaction.editReply(`You suck with a score of ${round}/10`)
+        await scoreBoardSchema.findByIdAndUpdate({
+            _id: interaction.user.id,
+        }, {
+            _id: interaction.user.id,
+            _name: interaction.user.tag,
+            $inc: {
+                _numberOfTimesPlayed: 1,
+            },
+            $max: {
+                _highScore: score,
+            }
+        }, {
+            upsert: true,
+        })
     }
 }
 
