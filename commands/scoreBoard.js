@@ -23,8 +23,10 @@ module.exports = {
             return
         let counter = 0
         //await delay(4000)
+
         for (let i = 0; i < data.length; i++) {
-            const user = await client.users.cache.get(data[i]._id);
+            const user = await client.users.fetch(data[i]._id);
+            await delay(1000)
             const userTag = `${user.username}`;
             usersArr.push(userTag)
             scoreArr.push(data[i]._highScore)
