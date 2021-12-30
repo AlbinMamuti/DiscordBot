@@ -26,7 +26,8 @@ module.exports = {
 
         for (let i = 0; i < data.length; i++) {
             const user = await client.users.fetch(data[i]._id);
-            await delay(1000)
+            if (!user)
+                continue;
             const userTag = `${user.username}`;
             usersArr.push(userTag)
             scoreArr.push(data[i]._highScore)
