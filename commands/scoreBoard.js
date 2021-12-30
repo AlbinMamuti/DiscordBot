@@ -9,14 +9,12 @@ module.exports = {
     testOnly: true,
 
     callback: async ({ message, interaction, channel, client }) => {
-        console.log('keke')
         const data = await scoreBoardSchema
             .find({})
             .sort({
                 _highScore: -1,
             })
             .limit(5)
-        console.log(data)
         let usersArr = []
         let scoreArr = []
         let numPlaysArr = []
